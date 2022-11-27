@@ -1,6 +1,10 @@
 // use parcel v2 to import paths to resources
-import imgIicons from 'url:../img/icons.svg' // parcel v2
-// console.log(imgIicons); // this is the path to the icons in /dist directory
+import imgIcons from 'url:../img/icons.svg' // parcel v2
+// console.log(imgIcons); // this is the path to the icons in /dist directory
+
+// polyfill
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 ///////////////////////////////////////
 
@@ -30,7 +34,7 @@ const renderSpinner = function (parentEl) {
     const markup = `
     <div class="spinner">
         <svg>
-            <use href="${imgIicons}#icon-loader"></use>
+            <use href="${imgIcons}#icon-loader"></use>
         </svg>
     </div>`;
     // parentEl.innerHTML = '';
@@ -80,14 +84,14 @@ const showRecipe = async function (useCached = false) {
         <div class="recipe__details">
           <div class="recipe__info">
             <svg class="recipe__info-icon">
-              <use href="${imgIicons}#icon-clock"></use>
+              <use href="${imgIcons}#icon-clock"></use>
             </svg>
             <span class="recipe__info-data recipe__info-data--minutes">${recipe.cookingTime}</span>
             <span class="recipe__info-text">minutes</span>
           </div>
           <div class="recipe__info">
             <svg class="recipe__info-icon">
-              <use href="${imgIicons}#icon-users"></use>
+              <use href="${imgIcons}#icon-users"></use>
             </svg>
             <span class="recipe__info-data recipe__info-data--people">${recipe.servings}</span>
             <span class="recipe__info-text">servings</span>
@@ -95,12 +99,12 @@ const showRecipe = async function (useCached = false) {
             <div class="recipe__info-buttons">
               <button class="btn--tiny btn--increase-servings">
                 <svg>
-                  <use href="${imgIicons}#icon-minus-circle"></use>
+                  <use href="${imgIcons}#icon-minus-circle"></use>
                 </svg>
               </button>
               <button class="btn--tiny btn--increase-servings">
                 <svg>
-                  <use href="${imgIicons}#icon-plus-circle"></use>
+                  <use href="${imgIcons}#icon-plus-circle"></use>
                 </svg>
               </button>
             </div>
@@ -108,12 +112,12 @@ const showRecipe = async function (useCached = false) {
 
           <div class="recipe__user-generated">
             <svg>
-              <use href="${imgIicons}#icon-user"></use>
+              <use href="${imgIcons}#icon-user"></use>
             </svg>
           </div>
           <button class="btn--round">
             <svg class="">
-              <use href="${imgIicons}#icon-bookmark-fill"></use>
+              <use href="${imgIcons}#icon-bookmark-fill"></use>
             </svg>
           </button>
         </div>
@@ -125,7 +129,7 @@ const showRecipe = async function (useCached = false) {
             return `
                 <li class="recipe__ingredient">
                   <svg class="recipe__icon">
-                    <use href="${imgIicons}#icon-check"></use>
+                    <use href="${imgIcons}#icon-check"></use>
                   </svg>
                   <div class="recipe__quantity">${ing.quantity}</div>
                   <div class="recipe__description">
@@ -153,7 +157,7 @@ const showRecipe = async function (useCached = false) {
           >
             <span>Directions</span>
             <svg class="search__icon">
-              <use href="${imgIicons}#icon-arrow-right"></use>
+              <use href="${imgIcons}#icon-arrow-right"></use>
             </svg>
           </a>
         </div>`;
