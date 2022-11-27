@@ -1,6 +1,6 @@
 // use parcel v2 to import paths to resources
 import imgIicons from 'url:../img/icons.svg' // parcel v2
-console.log(imgIicons); // this is the path to the icons in /dist directory
+// console.log(imgIicons); // this is the path to the icons in /dist directory
 
 ///////////////////////////////////////
 
@@ -24,10 +24,25 @@ const timeout = function (s) {
 ///////////////////////////////////////
 ///////////////////////////////////////
 
+
+const renderSpinner = function (parentEl) {
+    // recipe__fig
+    const markup = `
+    <div class="spinner">
+        <svg>
+            <use href="${imgIicons}#icon-loader"></use>
+        </svg>
+    </div>`;
+    // parentEl.innerHTML = '';
+    parentEl.insertAdjacentHTML('afterbegin', markup);
+}
+
 const showRecipe = async function (useCached = false) {
     // loading recipe
     try {
         let data;
+        renderSpinner(recipeContainer); // BUG: not showing up
+
         if (useCached) {
             data = simpleCache.recipe2;
             console.log(`Using cached recipe.`);
