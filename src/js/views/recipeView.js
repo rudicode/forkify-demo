@@ -1,6 +1,9 @@
 // use parcel v2 to import paths to resources
 import imgIcons from 'url:../../img/icons.svg' // parcel v2
 // console.log(imgIcons); // this is the path to the icons in /dist directory
+import { Fraction } from 'fractional';
+
+// console.log((new Fraction(7,3)).toString() );
 
 class RecipeView {
     #parentElement = document.querySelector('.recipe');
@@ -84,21 +87,7 @@ class RecipeView {
         <div class="recipe__ingredients">
           <h2 class="heading--2">Recipe ingredients</h2>
           <ul class="recipe__ingredient-list">
-            ${this.#data.ingredients.map(ing => {
-            return `
-                <li class="recipe__ingredient">
-                  <svg class="recipe__icon">
-                    <use href="${imgIcons}#icon-check"></use>
-                  </svg>
-                  <div class="recipe__quantity">${ing.quantity}</div>
-                  <div class="recipe__description">
-                    <span class="recipe__unit">${ing.unit}</span>
-                    ${ing.description}
-                  </div>
-                </li>
-                `
-        }).join('\n')
-            }
+            ${this.#generateMarkupIngredientList()}
           </ul>
         </div>
 
@@ -120,6 +109,29 @@ class RecipeView {
             </svg>
           </a>
         </div>`;
+    }
+
+    #generateMarkupIngredientList() {
+        return this.#data.ingredients.map(ing => this.#generateMrkupIngredient(ing)).join('\n')
+    }
+
+    #generateMrkupIngredient(ing) {
+        return `
+                <li class="recipe__ingredient">
+                  <svg class="recipe__icon">
+                    <use href="${imgIcons}#icon-check"></use>
+                  </svg>
+                  <div class="recipe__quantity">${this.#toFraction(ing.quantity)}</div>
+                  <div class="recipe__description">
+                    <span class="recipe__unit">${ing.unit}</span>
+                    ${ing.description}
+                  </div>
+                </li>
+                `
+    }
+
+    #toFraction(num) {
+        return num ? (new Fraction(num).toString()) : ''
     }
 }
 
