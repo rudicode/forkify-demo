@@ -1,10 +1,17 @@
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
+import resultsView from './views/resultsView.js';
 
 // polyfill
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+
+// parcel hot reload
+// TODO find out why this causes multiple calls to controlRecipes() and possibly others
+// if (module.hot) {
+//     module.hot.accept();
+// }
 
 ///////////////////////////////////////
 ///////////////////////////////////////
@@ -30,11 +37,13 @@ const controlRecipes = async function () {
 
 const controlLoadSearchResults = async function () {
     try {
+        resultsView.renderSpinner();
         const query = searchView.getQuery();
         if(!query) return;
 
         await model.loadSearchResults(query);
         console.log(model.state.search);
+        resultsView.render(model.state.search.results);
     } catch (err) {
         console.error(`Error: controlLoadSearchResults(), ${err.message}`);
     }
