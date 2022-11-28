@@ -1,5 +1,6 @@
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
+import searchView from './views/searchView.js';
 
 // polyfill
 import 'core-js/stable';
@@ -23,9 +24,22 @@ const controlRecipes = async function () {
 
     } catch (err) {
         console.error(`Error: $controlRecipes(), ${err.message}`);
-        recipeView.removeSpinner();
+        recipeView.renderError();
     }
 };
+
+const controlLoadSearchResults = async function () {
+    try {
+        const query = searchView.getQuery();
+        if(!query) return;
+
+        searchView.clear();
+        await model.loadSearchResults(query);
+        console.log(model.state.search);
+    } catch (err) {
+        console.error(`Error: controlLoadSearchResults(), ${err.message}`);
+    }
+}
 
 
 //
@@ -49,6 +63,10 @@ const init = function () {
     // pre-fill cache with known recipes
     model.preFillRecipeCache();
 
-    recipeView.addHandlerRender(controlRecipes); // pub/sub pattern
+    // pub/sub event handlers
+    recipeView.addHandlerRender(controlRecipes);
+    searchView.addHandlerSearch(controlLoadSearchResults);
+
+    // model.loadSearchResults('pizza');
 }
 init();

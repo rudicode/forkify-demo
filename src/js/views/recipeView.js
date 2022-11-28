@@ -6,6 +6,8 @@ import { Fraction } from 'fractional';
 class RecipeView {
     #parentElement = document.querySelector('.recipe');
     #data;
+    #errorMessage = `Could not find the recipe. Please try another one.`;
+    #message = `Success message`;
 
     // Public
 
@@ -24,6 +26,7 @@ class RecipeView {
                     <use href="${imgIcons}#icon-loader"></use>
                 </svg>
             </div>`;
+        // this.#clear();
         this.#parentElement.insertAdjacentHTML('afterbegin', markup);
     }
 
@@ -31,8 +34,38 @@ class RecipeView {
         document.querySelector('.spinner')?.remove(); // remove spinner if it exists
     }
 
+    renderMessage(message = this.#message) {
+        const markup = `
+            <div class="message">
+                <div>
+                    <svg>
+                        <use href="${imgIcons}#icon-smile"></use>
+                    </svg>
+                </div>
+            <p>${message}</p>
+            </div>
+          `;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+
+    renderError(message = this.#errorMessage) {
+        const markup = `
+            <div class="error">
+                <div>
+                    <svg>
+                        <use href="${imgIcons}#icon-alert-triangle"></use>
+                    </svg>
+                </div>
+            <p>${message}</p>
+            </div>
+          `;
+        this.#clear();
+        this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+
     addHandlerRender(handler) {
-        ['hashchange', 'load'].forEach(event => window.addEventListener(event, handler) );
+        ['hashchange', 'load'].forEach(event => window.addEventListener(event, handler));
     }
 
     //
