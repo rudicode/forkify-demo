@@ -1,8 +1,11 @@
-// import { async } from "regenerator-runtime" // TODO: verify if I need this
-import * as simpleCache from './simpleCache.js';
+import { async } from "regenerator-runtime" // TODO: verify if I need this
+// import * as simpleCache from './simpleCache.js';
+import { SimpleCache } from './simpleCache.js';
+import { API_URL } from "./config.js";
+import { getJSON } from "./helpers.js";
 
 
-export const recipeCache = new simpleCache.SimpleCache();
+export const recipeCache = new SimpleCache();
 export const state = {
     recipe: {},
 }
@@ -14,19 +17,12 @@ export const loadRecipe = async function (hashId, useCache = true) {
         let data;
         if (useCache && recipeCache.find(hashId)) {
             data = recipeCache.find(hashId);
-            // console.log(data);
-            console.log(`Using cached : ${hashId}`);
+            console.log(`Cache found: ${hashId}`);
         } else {
-            const res = await fetch(
-                `https://forkify-api.herokuapp.com/api/v2/recipes/${hashId}`
-            );
-            data = await res.json();
-            // console.log(res, data);
-            if (!res.ok) throw new Error(`${data.message} (${res.status})`)
+            data = await getJSON(`${API_URL}/${hashId}`);
 
-            console.log(`Caching ${data.data.recipe.id}`, data);
+            console.log(`Cache add: ${data.data.recipe.id}`, data);
             recipeCache.set(data.data.recipe.id, data); // cache recipe for future
-            // recipeCache.log();
         }
 
         const { recipe } = data.data
@@ -43,6 +39,7 @@ export const loadRecipe = async function (hashId, useCache = true) {
         // console.log('state.recipe', state.recipe);
     } catch (err) {
         console.error(`Error: $loadRecipe(), ${err.message}`);
+        throw err;
     }
 }
 

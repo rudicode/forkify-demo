@@ -3,11 +3,12 @@ import imgIcons from 'url:../../img/icons.svg' // parcel v2
 // console.log(imgIcons); // this is the path to the icons in /dist directory
 import { Fraction } from 'fractional';
 
-// console.log((new Fraction(7,3)).toString() );
-
 class RecipeView {
     #parentElement = document.querySelector('.recipe');
     #data;
+
+    // Public
+
     render(data) {
         this.#data = data;
         const markup = this.#generateMrkup();
@@ -29,6 +30,14 @@ class RecipeView {
     removeSpinner() {
         document.querySelector('.spinner')?.remove(); // remove spinner if it exists
     }
+
+    addHandlerRender(handler) {
+        ['hashchange', 'load'].forEach(event => window.addEventListener(event, handler) );
+    }
+
+    //
+    // Private
+    //
 
     #clear() {
         this.#parentElement.innerHTML = '';

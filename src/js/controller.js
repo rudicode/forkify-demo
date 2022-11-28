@@ -7,21 +7,8 @@ import 'regenerator-runtime/runtime';
 
 ///////////////////////////////////////
 ///////////////////////////////////////
-///////////////////////////////////////
-///////////////////////////////////////
 
-const timeout = function (s) {
-    return new Promise(function (_, reject) {
-        setTimeout(function () {
-            reject(new Error(`Request took too long! Timeout after ${s} second`));
-        }, s * 1000);
-    });
-};
-
-///////////////////////////////////////
-///////////////////////////////////////
-
-const controlRecipes = async function (useCachedOnly = false) {
+const controlRecipes = async function () {
     try {
         const hashId = window.location.hash.slice(1);
         // console.log('hashID: ',hashId);
@@ -45,12 +32,7 @@ const controlRecipes = async function (useCachedOnly = false) {
 // Event Listeners
 //
 
-// add the same event handler for multiple events in a loop
-['hashchange', 'load'].forEach(event => window.addEventListener(event, function(){controlRecipes(true)}) );
-// window.addEventListener('hashchange', function(){controlRecipes(true)});
-// window.addEventListener('load', function(){controlRecipes(true)});
-
-// for cache debugging
+// for cache debugging only
 const logoImage = document.querySelector('.header__logo');
 logoImage.addEventListener('click', function(){
     model.recipeCache.log(); // output recipeCache to concole
@@ -60,7 +42,13 @@ logoImage.addEventListener('click', function(){
 // App setup
 //
 
-console.log('Game ON!!');
+const init = function () {
 
-// pre-fill cache with known recipes
-model.preFillRecipeCache();
+    console.log('Game ON!!');
+
+    // pre-fill cache with known recipes
+    model.preFillRecipeCache();
+
+    recipeView.addHandlerRender(controlRecipes); // pub/sub pattern
+}
+init();
