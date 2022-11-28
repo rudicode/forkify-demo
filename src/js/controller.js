@@ -43,23 +43,13 @@ const controlLoadSearchResults = async function () {
         resultsView.renderSpinner();
 
         await model.loadSearchResults(query);
-        console.log(model.state.search);
+        // console.log(model.state.search);
         resultsView.render(model.state.search.results);
     } catch (err) {
         console.error(`Error: controlLoadSearchResults(), ${err.message}`);
     }
 }
 
-
-//
-// Event Listeners
-//
-
-// for cache debugging only
-const logoImage = document.querySelector('.header__logo');
-logoImage.addEventListener('click', function(){
-    model.recipeCache.log(); // output recipeCache to concole
-})
 
 //
 // App setup
