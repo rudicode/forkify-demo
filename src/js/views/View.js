@@ -8,6 +8,9 @@ export default class View {
     // Public
 
     render(data) {
+        // console.log('view: ', data);
+        // if no data or data is an empty array
+        if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
