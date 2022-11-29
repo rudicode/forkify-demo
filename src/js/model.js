@@ -80,6 +80,7 @@ export const loadSearchResults = async function (query, useCache = true) {
                 image: rec.image_url
             }
         })
+        // state.search.page = 1 // after a new search page should be 1
     } catch (err) {
         console.error(`Error: loadSearchResults(), ${err.message}`);
         throw err;
@@ -88,10 +89,12 @@ export const loadSearchResults = async function (query, useCache = true) {
 
 export const getSearchResultsPage = function (page = state.search.page) {
     if (!Number.isFinite(page)) {
-        page = state.search.page; // if bad number, use same page
+        page = state.search.page; // if bad number, use current page
     }
 
     const numPages = Math.ceil(state.search.results.length / state.search.resultsPerPage);
+
+    // keep page in bounds
     page = page > numPages ? numPages : page;
     page = page <= 0 ? 1 : page;
 
@@ -106,7 +109,7 @@ export const updateServings = function (newServings) {
     if (!Number.isFinite(newServings) || newServings < 1 || newServings > MAX_SERVINGS) return;
 
     // console.log(state.recipe.ingredients);
-    state.recipe.ingredients.forEach( ing => {
+    state.recipe.ingredients.forEach(ing => {
         // newQty = oldQty * newServings / oldServings
         ing.quantity = ing.quantity * newServings / state.recipe.servings;
     });

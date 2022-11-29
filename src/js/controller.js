@@ -48,7 +48,7 @@ const controlLoadSearchResults = async function () {
 
         await model.loadSearchResults(query);
 
-        resultsView.render(model.getSearchResultsPage(1));
+        resultsView.render(model.getSearchResultsPage(1)); //TODO check if we need to pass in page?
         pagenationView.render(model.state.search);
         // console.log(`controlLoadSearchResults: `,model.state);
     } catch (err) {
