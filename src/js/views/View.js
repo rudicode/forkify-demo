@@ -10,11 +10,41 @@ export default class View {
     render(data) {
         // console.log('view: ', data);
         // if no data or data is an empty array
-        if(!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
+        if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
         this._parentElement.insertAdjacentHTML('afterbegin', markup);
+    }
+
+    // update only changed text and attributes
+    // this is not very efficient but ok for this type of application
+    update(data) {
+        if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+        const newDOM = document.createRange().createContextualFragment(newMarkup);
+        const newElements = Array.from(newDOM.querySelectorAll('*'));
+        const curElements = Array.from(this._parentElement.querySelectorAll('*'));
+        // console.log(curElements, newElements);
+        newElements.forEach((newEl, i) => {
+            const curEl = curElements[i];
+            // console.log(curEl, newEl.isEqualNode(curEl));
+
+            // only update changes to text
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== '') {
+                // console.log(`updating text: ${newEl.textContent}`);
+                curEl.textContent = newEl.textContent;
+            }
+
+            // only update changed attributes
+            if (!newEl.isEqualNode(curEl)) {
+                // console.log(newEl.attributes);
+                // console.log(Array.from(newEl.attributes));
+                Array.from(newEl.attributes).forEach(attr => curEl.setAttribute(attr.name, attr.value));
+
+            }
+        })
     }
 
     renderSpinner() {
