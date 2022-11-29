@@ -24,6 +24,9 @@ const controlRecipes = async function () {
         if (!hashId) return;
         recipeView.renderSpinner(); // BUG: not showing up for long
 
+        // update results view to highlight current recipe
+        resultsView.update(model.getSearchResultsPage());
+
         // 1) Load Recipe
         await model.loadRecipe(hashId); // remember loadRecipe is asysnc, so await
 
@@ -47,7 +50,7 @@ const controlLoadSearchResults = async function () {
 
         resultsView.render(model.getSearchResultsPage(1));
         pagenationView.render(model.state.search);
-        console.log(`controlLoadSearchResults: `,model.state);
+        // console.log(`controlLoadSearchResults: `,model.state);
     } catch (err) {
         console.error(`Error: controlLoadSearchResults(), ${err.message}`);
     }

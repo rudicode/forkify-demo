@@ -20,7 +20,7 @@ export default class View {
     // update only changed text and attributes
     // this is not very efficient but ok for this type of application
     update(data) {
-        if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
+        // if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
         this._data = data;
         const newMarkup = this._generateMarkup();
         const newDOM = document.createRange().createContextualFragment(newMarkup);
