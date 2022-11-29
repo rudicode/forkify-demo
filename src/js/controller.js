@@ -3,6 +3,7 @@ import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import pagenationView from './views/pagenationView.js';
+import bookmarksView from './views/bookmarksView.js';
 
 // polyfill
 import 'core-js/stable';
@@ -26,6 +27,7 @@ const controlRecipes = async function () {
 
         // update results view to highlight current recipe
         resultsView.update(model.getSearchResultsPage());
+        bookmarksView.update(model.state.bookmarks);
 
         // 1) Load Recipe
         await model.loadRecipe(hashId); // remember loadRecipe is asysnc, so await
@@ -74,6 +76,7 @@ const controlAddBookmark = function () {
     else
         model.addBookmark(model.state.recipe); // bookmark current
     recipeView.update(model.state.recipe); // update the view
+    bookmarksView.render(model.state.bookmarks);
 }
 
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "recipes",
   "scripts": {
-    "start": "parcel index.html",
+    "start": "parcel --port 3000 index.html",
     "buld": "parcel build index.html"
   },
   "author": "rc",
