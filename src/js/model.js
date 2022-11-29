@@ -2,6 +2,7 @@ import { async } from "regenerator-runtime" // TODO: verify if I need this
 // import * as simpleCache from './simpleCache.js';
 import { SimpleCache } from './simpleCache.js';
 import { API_URL } from "./config.js";
+import { RESULTS_PER_PAGE } from "./config.js";
 import { getJSON } from "./helpers.js";
 
 
@@ -13,6 +14,8 @@ export const state = {
     search: {
         query: '',
         results: [],
+        page: 1,
+        resultsPerPage: RESULTS_PER_PAGE,
     }
 }
 
@@ -28,7 +31,7 @@ export const loadRecipe = async function (hashId, useCache = true) {
         if (useCache) {
             data = recipeCache.find(hashId);
         }
-        if(!data) {
+        if (!data) {
             data = await getJSON(`${API_URL}/${hashId}`);
             recipeCache.set(data.data.recipe.id, data); // cache recipe for future
         }
@@ -63,7 +66,7 @@ export const loadSearchResults = async function (query, useCache = true) {
             data = searchCache.find(query);
             // console.log(`Cache found: ${query}`);
         }
-        if(!data) {
+        if (!data) {
             data = await getJSON(`${API_URL}?search=${query}`);
             searchCache.set(query, data); // cache recipe for future
         }
@@ -82,12 +85,29 @@ export const loadSearchResults = async function (query, useCache = true) {
     }
 }
 
+export const getSearchResultsPage = function (page = state.search.page) {
+    if (!Number.isFinite(page)) {
+        page = state.search.page; // if bad number, use same page
+    }
+
+    const numPages = Math.ceil(state.search.results.length / state.search.resultsPerPage);
+    page = page > numPages ? numPages : page;
+    page = page <= 0 ? 1 : page;
+
+    const start = (page - 1) * state.search.resultsPerPage;
+    const end = page * state.search.resultsPerPage;
+    state.search.page = page;
+    // console.log('start,end', start,end);
+    return state.search.results.slice(start, end);
+}
+
 // Event handler
 // for cache debugging only
 const logoImage = document.querySelector('.header__logo');
-logoImage.addEventListener('click', function(){
+logoImage.addEventListener('click', function () {
     recipeCache.log();
     searchCache.log();
+    console.log(state);
 });
 
 // helpers

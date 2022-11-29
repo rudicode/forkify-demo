@@ -2,6 +2,7 @@ import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
+import pagenationView from './views/pagenationView.js';
 
 // polyfill
 import 'core-js/stable';
@@ -43,11 +44,19 @@ const controlLoadSearchResults = async function () {
         resultsView.renderSpinner();
 
         await model.loadSearchResults(query);
-        // console.log(model.state.search);
-        resultsView.render(model.state.search.results);
+
+        resultsView.render(model.getSearchResultsPage(1));
+        pagenationView.render(model.state.search);
     } catch (err) {
         console.error(`Error: controlLoadSearchResults(), ${err.message}`);
     }
+};
+
+const controlPagenation = function(page) {
+    // console.log(`controlPagenation() page: ${page}`);
+    if (!Number.isFinite(page)) return;
+    resultsView.render(model.getSearchResultsPage(page));
+    pagenationView.render(model.state.search);
 }
 
 
@@ -65,6 +74,7 @@ const init = function () {
     // pub/sub event handlers
     recipeView.addHandlerRender(controlRecipes);
     searchView.addHandlerSearch(controlLoadSearchResults);
+    pagenationView.addHandlerClick(controlPagenation);
 
     // model.loadSearchResults('pizza');
 }

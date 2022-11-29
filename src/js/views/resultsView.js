@@ -1,6 +1,6 @@
 import View from './View.js'
 import imgIcons from 'url:../../img/icons.svg' // parcel v2
-import { mark } from 'regenerator-runtime';
+//import { mark } from 'regenerator-runtime'; // what is this?
 
 class ResultsView extends View {
     _parentElement = document.querySelector('.results');
@@ -12,17 +12,7 @@ class ResultsView extends View {
     //
 
     _generateMarkup() {
-        // console.log(this._data);
-        // for (const item of this._data) 
-        const numberOfResultsFound = `
-        <li class="preview" style="margin-left: 11em">
-            <div class="preview__data">
-                <h4 class="preview__title">Found ${this._data.length} recipes.</h4>
-            </div>
-        </li>
-        `
-        const markup = this._data.map(this._generateMarkupPreview).join('\n');
-        return `${numberOfResultsFound}\n${markup}`;
+        return this._data.map(this._generateMarkupPreview);
     }
 
     _generateMarkupPreview(item) {
