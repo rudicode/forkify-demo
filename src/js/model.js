@@ -17,7 +17,8 @@ export const state = {
         results: [],
         page: 1,
         resultsPerPage: RESULTS_PER_PAGE,
-    }
+    },
+    bookmarks: [],
 }
 
 //
@@ -48,6 +49,13 @@ export const loadRecipe = async function (hashId, useCache = true) {
             cookingTime: recipe.cooking_time,
             ingredients: recipe.ingredients,
         }
+
+        if (state.bookmarks.some(bookmark => bookmark.id == hashId)) {
+            state.recipe.bookmarked = true;
+        } else {
+            state.recipe.bookmarked = false;
+        }
+
     } catch (err) {
         console.error(`Error: loadRecipe(), ${err.message}`);
         throw err;
@@ -116,6 +124,28 @@ export const updateServings = function (newServings) {
     state.recipe.servings = newServings;
 };
 
+//
+// Bookmarks
+//
+
+export const addBookmark = function (recipe) {
+    console.log(`Adding bookmark: ${recipe.id}`);
+    state.bookmarks.push(recipe); // add bookmark
+
+    // add new property to recipe to indicate bookmarked
+    if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+}
+export const deleteBookmark = function (id) {
+    const index = state.bookmarks.findIndex(element => element.id === id);
+    if(index < 0) {
+        console.log('Could not find bookmark to delete: ', id);
+        return;
+    }
+    console.log('Delete bookmark: ', id);
+    state.bookmarks.splice(index, 1);
+    if (id === state.recipe.id) state.recipe.bookmarked = false;
+}
+
 
 
 
@@ -127,7 +157,7 @@ const logoImage = document.querySelector('.header__logo');
 logoImage.addEventListener('click', function () {
     recipeCache.log();
     searchCache.log();
-    console.log(state);
+    console.log('state:', state);
 });
 
 // helpers
