@@ -3,6 +3,7 @@ import { async } from "regenerator-runtime" // TODO: verify if I need this
 import { SimpleCache } from './simpleCache.js';
 import { API_URL } from "./config.js";
 import { RESULTS_PER_PAGE } from "./config.js";
+import { MAX_SERVINGS } from "./config.js";
 import { getJSON } from "./helpers.js";
 
 
@@ -101,6 +102,22 @@ export const getSearchResultsPage = function (page = state.search.page) {
     return state.search.results.slice(start, end);
 }
 
+export const updateServings = function (newServings) {
+    if (!Number.isFinite(newServings) || newServings < 1 || newServings > MAX_SERVINGS) return;
+
+    // console.log(state.recipe.ingredients);
+    state.recipe.ingredients.forEach( ing => {
+        // newQty = oldQty * newServings / oldServings
+        ing.quantity = ing.quantity * newServings / state.recipe.servings;
+    });
+    state.recipe.servings = newServings;
+};
+
+
+
+
+
+//
 // Event handler
 // for cache debugging only
 const logoImage = document.querySelector('.header__logo');

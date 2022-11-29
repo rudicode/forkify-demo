@@ -21,7 +21,7 @@ const controlRecipes = async function () {
     try {
         const hashId = window.location.hash.slice(1);
         // console.log('hashID: ',hashId);
-        if(!hashId) return;
+        if (!hashId) return;
         recipeView.renderSpinner(); // BUG: not showing up for long
 
         // 1) Load Recipe
@@ -39,7 +39,7 @@ const controlRecipes = async function () {
 const controlLoadSearchResults = async function () {
     try {
         const query = searchView.getQuery();
-        if(!query) return;
+        if (!query) return;
 
         resultsView.renderSpinner();
 
@@ -47,18 +47,23 @@ const controlLoadSearchResults = async function () {
 
         resultsView.render(model.getSearchResultsPage(1));
         pagenationView.render(model.state.search);
+        console.log(`controlLoadSearchResults: `,model.state);
     } catch (err) {
         console.error(`Error: controlLoadSearchResults(), ${err.message}`);
     }
 };
 
-const controlPagenation = function(page) {
+const controlPagenation = function (page) {
     // console.log(`controlPagenation() page: ${page}`);
     if (!Number.isFinite(page)) return;
     resultsView.render(model.getSearchResultsPage(page));
     pagenationView.render(model.state.search);
 }
 
+const controlServings = function (newServings) {
+    model.updateServings(newServings);     // update recipe servings in the state
+    recipeView.render(model.state.recipe); // update the recipe view
+}
 
 //
 // App setup
@@ -73,6 +78,7 @@ const init = function () {
 
     // pub/sub event handlers
     recipeView.addHandlerRender(controlRecipes);
+    recipeView.addHandlerUpdateServings(controlServings);
     searchView.addHandlerSearch(controlLoadSearchResults);
     pagenationView.addHandlerClick(controlPagenation);
 
