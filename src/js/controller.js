@@ -101,10 +101,16 @@ const controlAddRecipe = async function (newRecipe) {
 
         // success message
         addRecipeView.renderMessage();
-        // after some time close form
-        // TODO: is it necessary to autoclose the modal? Let user do it?
+
+        // make upladed recipe appear in bookmarks dropdown
+        bookmarksView.render(model.state.bookmarks);
+
+        // change id in url
+        window.history.pushState(null, '', `#${model.state.recipe.id}`);
+
+        // on success close message.
         setTimeout(function () {
-            // addRecipeView._toggleWindow();
+            addRecipeView._toggleWindow();
         }, MODAL_CLOSE_SEC * 1000);
 
     } catch (err) {

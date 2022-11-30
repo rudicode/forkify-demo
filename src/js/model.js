@@ -4,7 +4,7 @@ import { SimpleCache } from './simpleCache.js';
 import { API_URL } from "./config.js";
 import { RESULTS_PER_PAGE } from "./config.js";
 import { MAX_SERVINGS } from "./config.js";
-import { getJSON, sendJSON } from "./helpers.js";
+import { AJAX } from "./helpers.js";
 import { API_KEY } from "../../api-key.js";
 
 
@@ -50,7 +50,7 @@ export const loadRecipe = async function (hashId, useCache = true) {
             data = recipeCache.find(hashId);
         }
         if (!data) {
-            data = await getJSON(`${API_URL}/${hashId}`);
+            data = await AJAX(`${API_URL}/${hashId}?key=${API_KEY}`);
             recipeCache.set(data.data.recipe.id, data); // cache recipe for future
         }
 
@@ -83,8 +83,8 @@ export const loadSearchResults = async function (query, useCache = true) {
             // console.log(`Cache found: ${query}`);
         }
         if (!data) {
-            // data = await getJSON(`${API_URL}?search=${query}?key=${API_KEY}`);
-            data = await getJSON(`${API_URL}?search=${query}`);
+            data = await AJAX(`${API_URL}?search=${query}&key=${API_KEY}`);
+            // data = await AJAX(`${API_URL}?search=${query}`);
             searchCache.set(query, data); // cache recipe for future
         }
         // console.log(data);
@@ -93,7 +93,8 @@ export const loadSearchResults = async function (query, useCache = true) {
                 id: rec.id,
                 title: rec.title,
                 publisher: rec.publisher,
-                image: rec.image_url
+                image: rec.image_url,
+                ...(rec.key && { key: rec.key }),
             }
         })
         // state.search.page = 1 // after a new search page should be 1
@@ -173,6 +174,7 @@ export const uploadRecipe = async function (newRecipe) {
         const ingredients = Object.entries(newRecipe)
             .filter(item => item[0].startsWith('ingredient') && item[1] !== '')
             .map(ing => {
+                // TODO: replaceAll gets rid of spaces between words too. change to map over ingredients and use trim() instead
                 const ingArr = ing[1].replaceAll(' ', '').split(',');
                 if (ingArr.length !== 3) throw new Error(`Wrong ingredient format: ${ing[0]}`);
                 const [quantity, unit, description] = ingArr;
@@ -193,7 +195,7 @@ export const uploadRecipe = async function (newRecipe) {
         console.log(recipe);
         console.log(`endpoint: ${API_URL}?key=${API_KEY}`);
         // send it
-        const data = await sendJSON(`${API_URL}?key=${API_KEY}`, recipe)
+        const data = await AJAX(`${API_URL}?key=${API_KEY}`, recipe)
         // server returns success + recipe
         console.log('return data: ', data);
         state.recipe = createRecipeObject(data); // make current state the returned recipe

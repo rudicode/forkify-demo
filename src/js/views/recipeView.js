@@ -79,7 +79,10 @@ class RecipeView extends View {
               </button>
             </div>
           </div>
-          <div class="preview__user-generated">
+          <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+          <svg>
+              <use href="${imgIcons}#icon-user"></use>
+            </svg>
           </div>
           <button class="btn--round btn--bookmark">
             <svg class="">
