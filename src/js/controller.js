@@ -4,6 +4,7 @@ import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import pagenationView from './views/pagenationView.js';
 import bookmarksView from './views/bookmarksView.js';
+import addRecipeView from './views/addRecipeView.js';
 
 // polyfill
 import 'core-js/stable';
@@ -23,17 +24,20 @@ const controlRecipes = async function () {
         const hashId = window.location.hash.slice(1);
         // console.log('hashID: ',hashId);
         if (!hashId) return;
-        recipeView.renderSpinner(); // BUG: not showing up for long
+
+        recipeView.renderSpinner();
 
         // update results view to highlight current recipe
         resultsView.update(model.getSearchResultsPage());
-        bookmarksView.update(model.state.bookmarks);
 
-        // 1) Load Recipe
+        // Load Recipe
         await model.loadRecipe(hashId); // remember loadRecipe is asysnc, so await
 
-        // 2) Render view
+        // Render recipe
         recipeView.render(model.state.recipe);
+
+        // update bookmarks view
+        bookmarksView.update(model.state.bookmarks);
 
     } catch (err) {
         console.error(`Error: $controlRecipes(), ${err.message}`);
@@ -79,6 +83,16 @@ const controlAddBookmark = function () {
     bookmarksView.render(model.state.bookmarks);
 }
 
+const controlBookmarks = function () {
+    bookmarksView.render(model.state.bookmarks);
+}
+
+const controlAddRecipe = function (newRecipe) {
+    console.log(newRecipe);
+    console.log(newRecipe.title);
+    // upload functionality
+}
+
 
 
 //
@@ -98,6 +112,8 @@ const init = function () {
     recipeView.addHandlerAddBookmark(controlAddBookmark);
     searchView.addHandlerSearch(controlLoadSearchResults);
     pagenationView.addHandlerClick(controlPagenation);
+    bookmarksView.addHandlerRender(controlBookmarks);
+    addRecipeView._addHandlerUpload(controlAddRecipe);
 
     // model.loadSearchResults('pizza');
 }

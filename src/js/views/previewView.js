@@ -4,10 +4,6 @@ import imgIcons from 'url:../../img/icons.svg' // parcel v2
 class PreviewView extends View {
     _parentElement = '';
 
-    //
-    // Private
-    //
-
     _generateMarkup() {
         const item = this._data;
         const id = window.location.hash.slice(1);

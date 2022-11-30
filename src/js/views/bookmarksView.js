@@ -7,18 +7,14 @@ class BookmarksView extends View {
     _errorMessage = `No bookmarks yet. Find a good recipe and bookmark it.`;
     _message = `Success message`;
 
-    //
-    // Private
-    //
-
+    addHandlerRender(handler) {
+        window.addEventListener('load', handler);
+    }
     _generateMarkup() {
         return this._data
             .map(bookmark => previewView.render(bookmark, false))
             .join('')
     }
-
-
-
 }
 
-export default new BookmarksView(); // only one instance of this view
+export default new BookmarksView();

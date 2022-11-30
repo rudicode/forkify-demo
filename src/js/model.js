@@ -127,6 +127,9 @@ export const updateServings = function (newServings) {
 //
 // Bookmarks
 //
+const peristBookmarks = function () {
+    localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+}
 
 export const addBookmark = function (recipe) {
     console.log(`Adding bookmark: ${recipe.id}`);
@@ -134,16 +137,20 @@ export const addBookmark = function (recipe) {
 
     // add new property to recipe to indicate bookmarked
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+
+    peristBookmarks();
 }
 export const deleteBookmark = function (id) {
     const index = state.bookmarks.findIndex(element => element.id === id);
-    if(index < 0) {
+    if (index < 0) {
         console.log('Could not find bookmark to delete: ', id);
         return;
     }
     console.log('Delete bookmark: ', id);
     state.bookmarks.splice(index, 1);
     if (id === state.recipe.id) state.recipe.bookmarked = false;
+
+    peristBookmarks();
 }
 
 
@@ -172,10 +179,23 @@ export const preFillRecipeCache = function () {
     searchCache.set(searchNames[0], JSON.parse(searchResults[0]))
 }
 
+const clearBookmarks = function () {
+    localStorage.clear('bookmarks');
+}
 
 
+const init = function () {
+    const storage = localStorage.getItem('bookmarks');
+    if (storage) {
+        state.bookmarks = JSON.parse(storage);
+        // console.log(JSON.parse(storage));
+    }
+}
 
-
+// NOTE: maybe it would be better to call this init() from the
+// controller init(), have all the app starting in one place
+init();
+// console.log(state.bookmarks);
 
 
 
