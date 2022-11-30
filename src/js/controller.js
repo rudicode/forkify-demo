@@ -5,6 +5,7 @@ import resultsView from './views/resultsView.js';
 import pagenationView from './views/pagenationView.js';
 import bookmarksView from './views/bookmarksView.js';
 import addRecipeView from './views/addRecipeView.js';
+import { MODAL_CLOSE_SEC } from './config.js'
 
 // polyfill
 import 'core-js/stable';
@@ -87,10 +88,29 @@ const controlBookmarks = function () {
     bookmarksView.render(model.state.bookmarks);
 }
 
-const controlAddRecipe = function (newRecipe) {
-    console.log(newRecipe);
-    console.log(newRecipe.title);
-    // upload functionality
+const controlAddRecipe = async function (newRecipe) {
+    try {
+        addRecipeView.renderSpinner();
+        // TODO: again the spinner does not show up even when network throtled
+        // but if server actualy slow you see it.
+
+        await model.uploadRecipe(newRecipe);
+        console.log(`recipe returned: `, model.state.recipe);
+
+        recipeView.render(model.state.recipe);
+
+        // success message
+        addRecipeView.renderMessage();
+        // after some time close form
+        // TODO: is it necessary to autoclose the modal? Let user do it?
+        setTimeout(function () {
+            // addRecipeView._toggleWindow();
+        }, MODAL_CLOSE_SEC * 1000);
+
+    } catch (err) {
+        console.log(`controlAddRecipe(): ${err}`);
+        addRecipeView.renderError(err.message);
+    }
 }
 
 

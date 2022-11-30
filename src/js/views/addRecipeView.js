@@ -3,6 +3,7 @@ import imgIcons from 'url:../../img/icons.svg' // parcel v2
 
 class AddRecipeView extends View {
     _parentElement = document.querySelector('.upload');
+    _message = 'Recipe was successfuly uploaded';
     _window = document.querySelector('.add-recipe-window');
     _overlay = document.querySelector('.overlay');
     _btnOpen = document.querySelector('.nav__btn--add-recipe');
@@ -16,12 +17,14 @@ class AddRecipeView extends View {
 
     }
 
-    _toggleWindow () {
+    _toggleWindow() {
         this._overlay.classList.toggle('hidden');
         this._window.classList.toggle('hidden');
     }
 
     _addHandlerShowWindow() {
+        // TODO after the first submit this form gets clobbered
+        // need a function here to recreate it.
         this._btnOpen.addEventListener('click', this._toggleWindow.bind(this))
     }
 
