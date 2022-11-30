@@ -2,9 +2,10 @@
   "name": "forkify",
   "version": "1.0.0",
   "description": "recipes",
+  "default": "index.html",
   "scripts": {
-    "start": "parcel --port 3000 index.html",
-    "buld": "parcel build index.html"
+    "start": "parcel --port 3000 --dist-dir ./build-dev index.html",
+    "build": "parcel build index.html --dist-dir ./build-dist"
   },
   "author": "rc",
   "license": "ISC",
