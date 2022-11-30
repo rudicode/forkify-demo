@@ -5,8 +5,18 @@ import imgIcons from 'url:../../img/icons.svg' // parcel v2
 export default class View {
     _data;
 
-    // Public
+    /**
+     * Render the received object to the DOM
+     * @param {Object | Object[]} data The data to be rendered (eg. recipe) 
+     * @param {boolean} [render=true] If false, create markup string instead of rendering to the DOM
+     * @returns {undefined | string} A markup string is returned if render=false
+     * @this {Object} View instance
+     * @author Homer
+     * @todo remove unnecessary comments
+     */
 
+
+    // Public
     render(data, render = true) {
         // console.log('view: ', data);
         // if no data or data is an empty array
