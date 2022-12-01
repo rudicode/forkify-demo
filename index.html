@@ -17,6 +17,7 @@
 
 <body>
   <div class="container">
+
     <header class="header">
       <img src="src/img/logo.png" alt="Logo" class="header__logo" />
       <form class="search">
@@ -31,6 +32,22 @@
 
       <nav class="nav">
         <ul class="nav__list">
+          <li class="nav__item">
+            <button class="nav__btn nav__btn--meal-plan">
+              <svg class="nav__icon">
+                <use href="src/img/icons.svg#icon-clock"></use>
+              </svg>
+              <span>Today's Meals</span>
+            </button>
+          </li>
+          <li class="nav__item">
+            <button class="nav__btn nav__btn--add-to-meal-plan">
+              <svg class="nav__icon">
+                <use href="src/img/icons.svg#icon-plus-circle"></use>
+              </svg>
+              <span>Add to Meals</span>
+            </button>
+          </li>
           <li class="nav__item">
             <button class="nav__btn nav__btn--add-recipe">
               <svg class="nav__icon">
@@ -78,7 +95,32 @@
         </ul>
       </nav>
     </header>
-
+    <div class="meal-plan-today today collapsed">
+      <table class="meal-plan__today_table">
+        <!-- <tbody>
+            <td>Tuesday</td>
+            <td>
+              <div class="preview__data">
+                <h4 class="preview__title">Pasta with Tomato Cream ...</h4>
+                <p class="preview__publisher">The Pioneer Woman</p>
+              </div>
+            </td>
+            <td data-day="1" data-meal="2">
+              <div class="preview__data">
+                <h4 class="preview__title">Grilled Chicken ...</h4>
+                <p class="preview__publisher">The Pioneer Woman</p>
+              </div>
+            </td>
+            <td>
+              <div class="preview__data">
+                <h4 class="preview__title">Burger Pasta</h4>
+                <p class="preview__publisher">The Pioneer Woman</p>
+              </div>
+            </td>
+          </tr>
+        </tbody> -->
+      </table>
+    </div>
     <div class="search-results">
       <ul class="results">
         <!-- 
@@ -118,6 +160,10 @@
 
       <p class="copyright">
         &copy; Copyright by
+        <a class="twitter-link" target="_blank" href="https://github.com/rudicode">Rudi Luzar</a>. Additional features for Meal Plan and simplaCache.
+      </p>
+      <p class="copyright">
+        Original work &copy; Copyright by
         <a class="twitter-link" target="_blank" href="https://twitter.com/jonasschmedtman">Jonas Schmedtmann</a>. Use
         for learning or your portfolio. Don't use to teach. Don't claim
         as your own.
@@ -291,6 +337,120 @@
         <span>Upload</span>
       </button>
     </form>
+  </div>
+  <div class="overlay-meal-plan hidden"></div>
+  <div class="add-meal-plan-window hidden">
+    <button class="btn--close-meal-plan">&times;</button>
+    <div class="meal-plan">
+      <div class="preview__data current_recipe">
+        <h3>Add to meal plan</h3>
+        <h4 class="preview__title">Ppasta with Tomato Cream ...</h4>
+        <p class="preview__publisher">The Pioneer Woman</p>
+      </div>
+      <table class="meal-plan__table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Breakfast</th>
+            <th>Lunch</th>
+            <th>Dinner</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Monday</th>
+            <td>Eggs</td>
+            <td>Sandwitch</td>
+            <td>Lobster</td>
+          </tr>
+          <tr>
+            <th>Tuesday</th>
+            <td>
+              <div class="preview__data">
+                <h4 class="preview__title">Pasta with Tomato Cream ...</h4>
+                <p class="preview__publisher">The Pioneer Woman</p>
+              </div>
+            </td>
+            <td data-day="1" data-meal="2">
+              <div class="preview__data">
+                <h4 class="preview__title">Grilled Chicken ...</h4>
+                <p class="preview__publisher">The Pioneer Woman</p>
+              </div>
+            </td>
+            <td>
+              <div class="preview__data">
+                <h4 class="preview__title">Burger Pasta</h4>
+                <p class="preview__publisher">The Pioneer Woman</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Wednesday</th>
+            <td>Cereal</td>
+            <td>Pasta Salad</td>
+            <td>Burger Pasta</td>
+          </tr>
+          <tr>
+            <th>Thursday</th>
+            <td>Cereal</td>
+            <td>Pasta Salad</td>
+            <td>Burger Pasta</td>
+          </tr>
+          <tr>
+            <th>Friday</th>
+            <td>Cereal</td>
+            <td>Pasta Salad</td>
+            <td>Burger Pasta</td>
+          </tr>
+          <tr>
+            <th>Saturday</th>
+            <td>Cereal</td>
+            <td>Pasta Salad</td>
+            <td>Burger Pasta</td>
+          </tr>
+          <tr>
+            <th>Sunday</th>
+            <td>Cereal</td>
+            <td>Pasta Salad</td>
+            <td>Burger Pasta</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="button-group">
+      <div>
+        <button class="btn meal-plan__btn__ok">
+          <svg>
+            <use href="src/img/icons.svg#icon-check"></use>
+          </svg>
+          <span>Update</span>
+        </button>
+      </div>
+      <div>
+        <button class="btn meal-plan__btn__cancel">X
+          <svg>
+            <use href="src/img/icons.svg#icon-alert-x"></use>
+          </svg>
+          <span>Cancel</span>
+        </button>
+      </div>
+      <div>
+        <button class="btn meal-plan__btn__undo">
+          <svg>
+            <use href="src/img/icons.svg#icon-minus-circle"></use>
+          </svg>
+          <span>Undo</span>
+        </button>
+      </div>
+      <div>
+        <button class="btn--small meal-plan__btn__remove">
+          <svg>
+            <use href="src/img/icons.svg#icon-alert-triangle"></use>
+          </svg>
+          <span>Remove Meal</span>
+        </button>
+      </div>
+    </div>
   </div>
 </body>
 

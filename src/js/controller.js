@@ -5,6 +5,9 @@ import resultsView from './views/resultsView.js';
 import pagenationView from './views/pagenationView.js';
 import bookmarksView from './views/bookmarksView.js';
 import addRecipeView from './views/addRecipeView.js';
+import addMealPlanView from './views/addMealPlanView.js';
+import addMealPlanView from './views/addMealPlanView.js';
+import mealPlanTodayView from './views/mealPlanTodayView.js';
 import { MODAL_CLOSE_SEC } from './config.js'
 
 // polyfill
@@ -119,6 +122,19 @@ const controlAddRecipe = async function (newRecipe) {
     }
 }
 
+const controlOpenMealPlan = function () {
+    addMealPlanView.populateMealPlan(model.state.mealPlan, model.state.recipe);
+}
+
+const controlUpdateMealPlan = function (addToMealPlanArr) {
+    model.updateMealPlan(addToMealPlanArr)
+    renderTodayView();
+}
+
+const renderTodayView = function () {
+    mealPlanTodayView.renderTodayView(model.getTodaysMeals());
+}
+
 
 
 //
@@ -140,7 +156,11 @@ const init = function () {
     pagenationView.addHandlerClick(controlPagenation);
     bookmarksView.addHandlerRender(controlBookmarks);
     addRecipeView._addHandlerUpload(controlAddRecipe);
+    addMealPlanView._addHandlerUpdateMealPlan(controlUpdateMealPlan);
+    recipeView.addHandlerAddToMealPlan(controlOpenMealPlan);
 
     // model.loadSearchResults('pizza');
+    window.location.hash = '5ed6604691c37cdc054bd014'; // load recipe when first starting.
+    renderTodayView();
 }
 init();

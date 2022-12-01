@@ -1,12 +1,13 @@
-import View from './View.js'
+import View from './View.js';
 
 // use parcel v2 to import paths to resources
-import imgIcons from 'url:../../img/icons.svg' // parcel v2
+import imgIcons from 'url:../../img/icons.svg'; // parcel v2
 // console.log(imgIcons); // this is the path to the icons in /dist directory
 import { Fraction } from 'fractional';
 
 class RecipeView extends View {
     _parentElement = document.querySelector('.recipe');
+    _header = document.querySelector('.header');
     // _data;
     _errorMessage = `Could not find the recipe. Please try another one.`;
     _message = `Success message`;
@@ -21,21 +22,30 @@ class RecipeView extends View {
         this._parentElement.addEventListener('click', function (e) {
             const btn = e.target.closest('.btn--tiny');
             if (!btn) return;
-
-            const newServings = +btn.dataset.updateTo
-            // console.log(newServings);
+            const newServings = +btn.dataset.updateTo;
             handler(newServings);
-        })
+        });
     }
 
     addHandlerAddBookmark(handler) {
         this._parentElement.addEventListener('click', function (e) {
-            const btn = e.target.closest('.btn--bookmark')
+            const btn = e.target.closest('.btn--bookmark');
             if (!btn) return;
-            // console.log(btn);
-
             handler();
-        })
+        });
+    }
+
+    addHandlerAddToMealPlan(handler) {
+        this._parentElement.addEventListener('click', function (e) {
+            const btn = e.target.closest('.btn-add-to-meal-plan');
+            if (!btn) return;
+            handler();
+        });
+        this._header.addEventListener('click', function (e) {
+            const btn = e.target.closest('.nav__btn--add-to-meal-plan');
+            if (!btn) return;
+            handler();
+        });
     }
 
     //
@@ -79,14 +89,19 @@ class RecipeView extends View {
               </button>
             </div>
           </div>
-          <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+          <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}" title="Your own recipe">
           <svg>
               <use href="${imgIcons}#icon-user"></use>
             </svg>
           </div>
-          <button class="btn--round btn--bookmark">
+          <button class="btn--round btn--bookmark" title="Bookmark this recipe">
             <svg class="">
               <use href="${imgIcons}#icon-bookmark${this._data.bookmarked ? '-fill' : ''}"></use>
+            </svg>
+          </button>
+          <button class="btn--round btn-add-to-meal-plan" title="Add to Meal Plan">
+            <svg class="">
+              <use href="${imgIcons}#icon-plus-circle"></use>
             </svg>
           </button>
         </div>
@@ -119,7 +134,7 @@ class RecipeView extends View {
     }
 
     _generateMarkupIngredientList() {
-        return this._data.ingredients.map(ing => this._generateMrkupIngredient(ing)).join('\n')
+        return this._data.ingredients.map(ing => this._generateMrkupIngredient(ing)).join('\n');
     }
 
     _generateMrkupIngredient(ing) {
@@ -134,11 +149,11 @@ class RecipeView extends View {
                     ${ing.description}
                   </div>
                 </li>
-                `
+                `;
     }
 
     _toFraction(num) {
-        return num ? (new Fraction(num).toString()) : ''
+        return num ? new Fraction(num).toString() : '';
     }
 }
 

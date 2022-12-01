@@ -20,13 +20,14 @@ export const state = {
         resultsPerPage: RESULTS_PER_PAGE,
     },
     bookmarks: [],
+    mealPlan: [],
 }
 
 //
 // Load
 //
 
-const createRecipeObject = function (data) {
+export const createRecipeObject = function (data) {
     const { recipe } = data.data
     return {
         id: recipe.id,
@@ -206,6 +207,28 @@ export const uploadRecipe = async function (newRecipe) {
     }
 }
 
+//
+// mealPlan
+//
+
+const persistMealPlan = function () {
+    localStorage.setItem('mealplan', JSON.stringify(state.mealPlan));
+}
+
+// Takes an array of mealPlan positions and inserts the recipe
+export const updateMealPlan = function (addToMealPlanArr) {
+    // console.log(`model updateMealPlan(): `, addToMealPlanArr);
+    if (addToMealPlanArr.length > 0) {
+        addToMealPlanArr.forEach(item => state.mealPlan[item[0]][item[1]] = item[2]);
+        persistMealPlan();
+    }
+}
+
+export const getTodaysMeals = function () {
+    const today = (new Date()).getDay();
+    const meals = state.mealPlan[today];
+    return [meals, today];
+}
 
 
 
@@ -242,6 +265,18 @@ const init = function () {
         state.bookmarks = JSON.parse(storage);
         // console.log(JSON.parse(storage));
     }
+
+    const storedMealPlan = localStorage.getItem('mealplan');
+    if (storedMealPlan) {
+        state.mealPlan = JSON.parse(storedMealPlan);
+    }
+
+    // setup default mealPlan, 2D array 0-6 Mon-Sun, 0-2 Breakfast, Lunch, Dinner
+    if (state.mealPlan.length <= 0) {
+        for (let index = 0; index <= 6; index++) {
+            state.mealPlan.push([null, null, null]);
+        }
+    }
 }
 
 // NOTE: maybe it would be better to call this init() from the
@@ -274,6 +309,7 @@ const defaultRecipes =
         ,
         `{"status":"success","data":{"recipe":{"publisher":"Real Simple","ingredients":[{"quantity":5,"unit":"tbsps","description":"olive oil plus more for the baking sheet"},{"quantity":1,"unit":"pound","description":"pizza dough at room temperature"},{"quantity":0.5,"unit":"pound","description":"brussels sprouts very thinly sliced"},{"quantity":2,"unit":"oz","description":"sliced salami cut into quarters"},{"quantity":0.5,"unit":"pound","description":"mozzarella grated"},{"quantity":3,"unit":"tbsps","description":"kosher salt and black pepper"},{"quantity":4,"unit":"cups","description":"fresh lemon juice"}],"source_url":"http://www.realsimple.com/food-recipes/browse-all-recipes/salami-brussels-sprouts-pizza-00100000066561/index.html","image_url":"http://forkify-api.herokuapp.com/images/pizza_30061a5d763.jpg","title":"Salami and Brussels Sprouts Pizza","servings":4,"cooking_time":60,"id":"5ed6604591c37cdc054bcc08"}}}`
         ,
+        `{"status":"success","data":{"recipe":{"publisher":"Epicurious","ingredients":[{"quantity":0.5,"unit":"cup","description":"mayonnaise"},{"quantity":1.5,"unit":"tbsps","description":"dijon mustard"},{"quantity":2,"unit":"tbsps","description":"minced chipotle in including some sauce divided"},{"quantity":8,"unit":"","description":"bacon slices"},{"quantity":1.5,"unit":"pounds","description":"ground beef chuck"},{"quantity":2,"unit":"tsps","description":"sweet smoked paprika"},{"quantity":1,"unit":"","description":"large red onion cut into 4 thick rounds each stuck with a wooden pick to keep it together"},{"quantity":1,"unit":"","description":"firm-ripe avocado quartered lengthwise peeled and cut lengthwise into 1/3-inch thick slices"},{"quantity":null,"unit":"","description":"Olive oil for brushing on onion and avocado"},{"quantity":4,"unit":"","description":"hamburger buns grilled or toasted"},{"quantity":null,"unit":"","description":"Lettuce; cilantro sprigs"},{"quantity":null,"unit":"","description":"Instant-read thermometer"}],"source_url":"http://www.epicurious.com/recipes/food/views/Triple-Smoke-Burger-365889","image_url":"http://forkify-api.herokuapp.com/images/365889d458.jpg","title":"Triple Smoke Burger","servings":4,"cooking_time":60,"id":"5ed6604691c37cdc054bd014"}}}`
     ];
 
 const searchNames = ['pizza',]

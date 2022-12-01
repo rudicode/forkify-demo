@@ -1,0 +1,34 @@
+New Feature Ideas
+-----------------
+
+Weekly meal plan.
+Allow the user to add recipes to a weekly plan.
+✓ each day has, Breakfst, Lunch and Dinner slots.
+✓ each recipe has an add to meal plan button
+✓ the form shows the 7 days meal plan in a grid.
+  ✓ Columns are: [Breakfast, Lunch, Dinner]
+  ✓ rows are  [ next 7 days ]
+  - above is not mobile friendly, mobile would different
+  ✓ the user can click anywhere in this list and that
+    position gets the new recipe.
+  ✓ Multiple slots can be selected and the recipe small summary
+    shows up in that spot
+  ✓ When OK button is pushed the meal plan is updated
+  ✓ Cancel button closes the form.
+✓ Display current days meal plan [Breakfast, Lunch, dinner]
+  at the top of the page.
+✓ have a menu button to see the meal plan.
+✓ The data is saved in the model.state 
+✓ Save the mealPlan in local storage when updated (see bookmarks)
+✓ Load the mealPlan on reload. (see bookmarks)
+✓ On initial page load, have it fetch a recipe.
+✓ In today view, add link to each of the 3 meals.
+✓ Today view needs to get current day and display it.
+✓ Header needs "Add to meal plan" item. (same handler as on the reicpe page)
+✓ In add to meal plan, show the recipe being added.
+✓ Ability to remove a meal from the meal plan.
+- In search view display the search term at the top, possibly add how many results found.
+✓ Fix mealPlanTodayView, decouple toggle of view from rendering the view.
+- Display warning in console if there is no API_KEY set up. With instructions
+  where to get it.
+✓ TODO: go through procedure of deploying this app and make notes of it.
