@@ -19,7 +19,7 @@ This project was originally created as part of an online tutorial
 ## Running the App
 
 - use git to clone this repository.
-- ```npm install`` to install dependencies.
+- ```npm install``` to install dependencies.
 - copy "api-key.js.template" to "api-key.js"
 - If you want to upload recipes you need to get an API key at: [https://forkify-api.herokuapp.com/v2](https://forkify-api.herokuapp.com/v2)
 - Edit "api-key.js" file to add your API key.
